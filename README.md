@@ -315,7 +315,7 @@ because as i mentioned nrf24 does not returns in default values even after power
 
 ## **Receive:**
 
-### **1,Without ack payload:**
+### **1.Without ack payload:**
 ```c
     uint8_t dataR[PLD_SIZE];
 
