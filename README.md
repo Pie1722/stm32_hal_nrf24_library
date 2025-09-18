@@ -63,7 +63,7 @@ length (DPL), automatic acknowledgment (ACK), and various data rates.
 Open NRF24_conf.h and select SPI port, CE and CS GPIO pins and CS and CE pins relevant GPIO ports.
 
 
-## Getting started**
+## Getting started
 
 ### **Initialization:**
 
@@ -127,79 +127,79 @@ because as i mentioned nrf24 does not returns in default values even after power
 ## **Enable/disable DPL:**
 
 ### **enable:**
-
+```c
     nrf24_dpl(enable);
 
     nrf24_set_rx_dpl(pipe, enable);
-
+```
 
 ### **disable:**
-
+```c
     nrf24_dpl(disable);
     
     nrf24_set_rx_dpl(pipe, disable);
-
+```
 
 
 ## **Enable/disable AUTO_ACK:**
 
 ### **enable:**
-
+```c
     nrf24_auto_ack_all(auto_ack);
-
+```
 ### **disable:**
-
+```c
     nrf24_auto_ack_all(no_auto_ack); 
-
+```
 
 ## **Enabled/disabled auto_ack on each pipe individualy:**
 
 ### **enable:**
-
+```c
     nrf24_auto_ack(pipe, auto_ack);
-
+```
 ### **disable:**
-
+```c
     nrf24_auto_ack(pipe, no_auto_ack);
 
     nrf24_auto_retr_delay(0);
     nrf24_auto_retr_limit(15);
-    
+```    
 
 
 ## **Enable/disable ACK with payload:**
 
 ### **enable:**
-
+```c
     nrf24_auto_ack_all(auto_ack);
     nrf24_en_ack_pld(enable);
 
     nrf24_auto_retr_delay(0);
     nrf24_auto_retr_limit(15);
-
+```
 
 ### **disable:**
-
+```c
     nrf24_auto_ack_all(auto_ack);
     nrf24_en_ack_pld(disable);
 
     nrf24_auto_retr_delay(0);
     nrf24_auto_retr_limit(15);
-
+```
 
 
 
 ## **Enable/disable and configure CRC:**
-
+```c
     nrf24_set_crc(en_crc, _1byte);
 
     //First argument can be set as en_crc, which enables CRC, or no_crc, which disables CRC.
     //As second argument can be used _1byte or _2byte.
-
+```
 
 
 ## **Set TX RF power:**
-
+```c
     nrf24_tx_pwr(_0dbm);
 
     //Can be set used:
@@ -208,66 +208,66 @@ because as i mentioned nrf24 does not returns in default values even after power
     //    n6dbm  = 2
     //    _0dbm  = 3 -> MAX
 
-
+```
 
 ## **Set data rate:**
-
+```c
     nrf24_data_rate(_250kbps);
 
     //Can be set used:
     //    _1mbps   = 0
     //    _2mbps   = 1
     //    _250kbps = 2
-
+```
 
 
 ## **Set channel:**
-
+```c
     nrf24_set_channel(90);
     
     //Can be used from 0 to 126 which is equivalent of 2400mhz to 2525mhz.
     //1 = 1mhz
-
+```
 
 
 ## **Set payload size on each pipe:**
-
+```c
     nrf24_pipe_pld_size(pipe, payload_size);
 
     //pipe can be from 0 to 5
 
     //payload_size can be from 1 to 32
-
+```
 
 
 ## **Set Delay betwen Auto-retransmissions:**
-
+```c
     nrf24_auto_retr_delay(0);
     
     //Can be set from 0 to 15.
-
+```
 
 
 ## **Set Auto-retransmissions limit:**
-
+```c
     nrf24_auto_retr_limit(15);
 
     //Can be set from 0 to 15
-
+```
 
 
 
 ## **Transmit:**
 
 ### **1.Without ack payload:**
-
+```c
     uint8_t dataT[PLD_SIZE] = {"Hello"};
     nrf24_transmit(dataT, sizeof(dataT));
-
+```
 
 
 ### **2.With ack payload:**
-
+```c
     nrf24_auto_ack_all(auto_ack);
     nrf24_en_ack_pld(enable);
     
@@ -281,11 +281,11 @@ because as i mentioned nrf24 does not returns in default values even after power
     if(val == 0){
     	nrf24_receive(tx_ack_pld, sizeof(tx_ack_pld));
     }
-
+```
 
 
 ### **3.With NO_ACK command:**
-
+```c
     nrf24_auto_ack_all(auto_ack);
     nrf24_en_ack_pld(enable);
     nrf24_en_dyn_ack(enable);
@@ -294,10 +294,10 @@ because as i mentioned nrf24 does not returns in default values even after power
 
     uint8_t dataT[PLD_SIZE] = {"Hello"};
     nrf24_transmit_no_ack(dataT, sizeof(dataT));
-
+```
 
 ### **4.With ACK_PLD and IRQ**
-
+```c
     nrf24_transmit(dataT, sizeof(dataT));
 
     if(irq == 1){
@@ -311,12 +311,12 @@ because as i mentioned nrf24 does not returns in default values even after power
 	}
 	irq = 0;
     }
-
+```
 
 ## **Receive:**
 
 ### **1,Without ack payload:**
-
+```c
     uint8_t dataR[PLD_SIZE];
 
     nrf24_listen();
@@ -324,11 +324,11 @@ because as i mentioned nrf24 does not returns in default values even after power
     if(nrf24_data_available()){
        nrf24_receive(dataR, sizeof(dataR));
     }
-
+```
 
 
 ### **2.With transmit ack payload:**
-
+```c
     nrf24_auto_ack_all(auto_ack);
     nrf24_en_ack_pld(enable);
     
@@ -344,11 +344,11 @@ because as i mentioned nrf24 does not returns in default values even after power
 	nrf24_receive(dataR, sizeof(dataR));
 	nrf24_transmit_rx_ack_pld(0, rx_ack_pld, sizeof(rx_ack_pld));
     }
-
+```
 
 
 ### **3.With ACK_PLD and IRQ**
-
+```c
     if(irq == 1){
 	uint8_t stat = nrf24_r_status();
 
@@ -358,6 +358,6 @@ because as i mentioned nrf24 does not returns in default values even after power
 	}
 	irq = 0;
     }
-
+```
 
     
